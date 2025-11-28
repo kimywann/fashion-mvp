@@ -23,3 +23,4 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./select";
+export { Toaster } from "./sonner";
