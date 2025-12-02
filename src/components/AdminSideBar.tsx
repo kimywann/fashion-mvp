@@ -13,14 +13,14 @@ import {
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  //   {
-  //     title: "대시보드",
-  //     href: "/admin",
-  //     icon: LayoutDashboard,
-  //   },
   {
-    title: "상품 관리",
+    title: "대시보드",
     href: "/admin",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "상품 등록",
+    href: "/admin/product/new",
     icon: Package,
   },
   //   {
