@@ -24,3 +24,4 @@ export {
   SelectValue,
 } from "./select";
 export { Toaster } from "./sonner";
+export { Textarea } from "./textarea";
