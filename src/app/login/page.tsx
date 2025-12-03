@@ -9,6 +9,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { setUser } from "@/store/slices/userSlice";
+
 import {
   Button,
   Form,
@@ -30,6 +34,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const supabase = createClient(); // 브라우저에서 실행
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,7 +46,7 @@ export default function LoginPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
@@ -52,6 +57,7 @@ export default function LoginPage() {
         return;
       }
 
+      dispatch(setUser(data.user));
       toast.success("로그인을 완료하였습니다.");
       router.push("/");
       router.refresh();
