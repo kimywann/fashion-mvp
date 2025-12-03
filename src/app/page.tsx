@@ -1,63 +1,30 @@
-import { ProductCard } from "@/components/ProductCard";
+"use client";
 
-const products = [
-  {
-    id: "1",
-    name: "Product 1",
-    price: 10000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "2",
-    name: "Product 2",
-    price: 20000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "3",
-    name: "Product 3",
-    price: 30000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "4",
-    name: "Product 4",
-    price: 40000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "5",
-    name: "Product 5",
-    price: 50000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "6",
-    name: "Product 6",
-    price: 60000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "7",
-    name: "Product 7",
-    price: 70000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "8",
-    name: "Product 8",
-    price: 80000,
-    imageUrl: "/images/sample.jpg",
-  },
-  {
-    id: "9",
-    name: "Product 9",
-    price: 90000,
-    imageUrl: "/images/sample.jpg",
-  },
-];
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import type { Product } from "@/types";
+import { ProductCard } from "@/components/ProductCard";
+import { toast } from "sonner";
+
+const supabase = createClient();
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data: products, error } = await supabase
+        .from("products")
+        .select("*");
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      setProducts(products);
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold">Home</h1>
@@ -68,7 +35,7 @@ export default function Home() {
             id={product.id}
             name={product.name}
             price={product.price}
-            imageUrl={product.imageUrl}
+            imageUrl={product.image_url}
           />
         ))}
       </div>
