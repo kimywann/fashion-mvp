@@ -1,11 +1,18 @@
+import { CATEGORY_SIZES, DEFAULT_SIZES } from "@/lib/constants";
+
 export function SizeSelector({
   value,
   onChange,
+  category,
 }: {
   value: string[];
   onChange: (val: string[]) => void;
+  category?: string;
 }) {
-  const sizes = ["S", "M", "L", "XL", "FREE"];
+  const sizes =
+    category && CATEGORY_SIZES[category]
+      ? CATEGORY_SIZES[category]
+      : DEFAULT_SIZES;
 
   const toggleSize = (size: string) => {
     if (value.includes(size)) {

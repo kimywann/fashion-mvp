@@ -7,8 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const categories = ["자켓", "상의", "바지", "신발"];
+import { CATEGORIES } from "@/lib/constants";
 
 export function CategorySelector({
   value,
@@ -23,7 +22,7 @@ export function CategorySelector({
         <SelectValue placeholder="카테고리를 선택해주세요." />
       </SelectTrigger>
       <SelectContent>
-        {categories.map((category) => (
+        {CATEGORIES.map((category) => (
           <SelectItem key={category} value={category}>
             {category}
           </SelectItem>

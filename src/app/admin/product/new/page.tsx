@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import {
@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import SizeSelector from "@/components/SizeSelector";
 import CategorySelector from "@/components/CategorySelector";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해 주세요."),
@@ -45,6 +46,19 @@ export default function ProductAddPage() {
       description: "",
     },
   });
+
+  // 카테고리 값 감시
+  const selectedCategory = useWatch({
+    control: form.control,
+    name: "category",
+  });
+
+  // 카테고리가 변경되면 사이즈 초기화
+  useEffect(() => {
+    if (selectedCategory) {
+      form.setValue("size", []);
+    }
+  }, [selectedCategory, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let imageUrl: string | null = null;
@@ -148,21 +162,6 @@ export default function ProductAddPage() {
                     )}
                   />
 
-                  {/* 사이즈 */}
-                  <FormField
-                    control={form.control}
-                    name="size"
-                    render={({ field: { value, onChange } }) => (
-                      <FormItem>
-                        <FormLabel>사이즈</FormLabel>
-                        <FormControl>
-                          <SizeSelector value={value} onChange={onChange} />
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  />
-
                   {/* 카테고리 */}
                   <FormField
                     control={form.control}
@@ -172,6 +171,25 @@ export default function ProductAddPage() {
                         <FormLabel>카테고리</FormLabel>
                         <FormControl>
                           <CategorySelector value={value} onChange={onChange} />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* 사이즈 */}
+                  <FormField
+                    control={form.control}
+                    name="size"
+                    render={({ field: { value, onChange } }) => (
+                      <FormItem>
+                        <FormLabel>사이즈</FormLabel>
+                        <FormControl>
+                          <SizeSelector
+                            value={value}
+                            onChange={onChange}
+                            category={form.watch("category")}
+                          />
                         </FormControl>
                         <FormMessage className="text-xs" />
                       </FormItem>
