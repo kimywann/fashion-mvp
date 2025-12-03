@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">Home</h1>
+      <h1 className="mb-6 text-2xl font-bold">New Products</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductCard
