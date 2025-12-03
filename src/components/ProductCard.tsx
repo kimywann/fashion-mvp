@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 type ProductCardProps = {
-  id: string;
+  id: number;
   name: string;
   price: number;
   imageUrl: string;
