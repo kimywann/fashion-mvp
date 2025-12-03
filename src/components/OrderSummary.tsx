@@ -22,12 +22,12 @@ export function OrderSummary({
   );
 
   return (
-    <section className={`flex w-1/3 flex-col gap-4 border ${className}`}>
+    <section className={`flex w-full flex-col gap-4 ${className}`}>
       <div className="m-4 flex justify-between">
         <p className="text-lg font-bold">총 상품 금액</p>
         <p className="text-lg font-bold">{totalAmount.toLocaleString()}원</p>
       </div>
-      <Button className="mt-60" onClick={onAction}>
+      <Button className="mt-4" onClick={onAction}>
         {buttonText}
       </Button>
     </section>
