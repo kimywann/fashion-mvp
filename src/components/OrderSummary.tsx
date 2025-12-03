@@ -1,0 +1,35 @@
+"use client";
+
+import { Button } from "@/components/ui";
+import type { CartItem } from "@/types";
+
+interface OrderSummaryProps {
+  items: CartItem[];
+  buttonText: string;
+  onAction: () => void;
+  className?: string;
+}
+
+export function OrderSummary({
+  items,
+  buttonText,
+  onAction,
+  className = "",
+}: OrderSummaryProps) {
+  const totalAmount = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  return (
+    <section className={`flex w-1/3 flex-col gap-4 border ${className}`}>
+      <div className="m-4 flex justify-between">
+        <p className="text-lg font-bold">총 상품 금액</p>
+        <p className="text-lg font-bold">{totalAmount.toLocaleString()}원</p>
+      </div>
+      <Button className="mt-60" onClick={onAction}>
+        {buttonText}
+      </Button>
+    </section>
+  );
+}
