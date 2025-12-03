@@ -1,5 +1,5 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   price: number;
   image_url: string;
@@ -8,11 +8,10 @@ export interface Product {
   description: string;
 }
 
-// export interface CartItem extends Product {
-//   quantity: number;
-//   selectedColor?: string;
-//   selectedSize?: string;
-// }
+export interface CartItem
+  extends Pick<Product, "id" | "name" | "price" | "image_url" | "size"> {
+  quantity: number;
+}
 
 // export interface OrderItem {
 //   id: string;
