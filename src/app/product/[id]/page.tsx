@@ -13,7 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-import type { Product } from "@/types";
+import type { CartItem, Product } from "@/types";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/store/slices/cartSlice";
+import { toast } from "sonner";
 
 const supabase = createClient();
 
@@ -22,6 +25,9 @@ export default function ProductDetailPage() {
   const productId = params.id;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<string>("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,6 +58,25 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [productId]);
 
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      toast.error("사이즈를 선택해 주세요.");
+      return;
+    }
+
+    const cartItem: CartItem = {
+      id: product?.id ?? 0,
+      name: product?.name ?? "",
+      price: product?.price ?? 0,
+      image_url: product?.image_url ?? "",
+      selectedSize,
+      quantity: 1,
+    };
+
+    dispatch(addItem(cartItem));
+    toast.success("장바구니에 추가되었습니다.");
+  };
+
   if (loading) return <div>로딩 중...</div>;
   if (!product) return <div>상품을 찾을 수 없습니다.</div>;
 
@@ -80,7 +105,7 @@ export default function ProductDetailPage() {
           </div>
           <section className="flex flex-col gap-2">
             <div>
-              <Select>
+              <Select value={selectedSize} onValueChange={setSelectedSize}>
                 <SelectTrigger className="!h-12 w-full">
                   <SelectValue placeholder="사이즈 선택" />
                 </SelectTrigger>
@@ -96,7 +121,7 @@ export default function ProductDetailPage() {
             <div>
               <Button
                 className="h-12 w-full cursor-pointer"
-                onClick={() => console.log("구매하기")}
+                onClick={handleAddToCart}
               >
                 구매하기
               </Button>
