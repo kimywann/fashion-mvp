@@ -9,7 +9,8 @@ export interface Product {
 }
 
 export interface CartItem
-  extends Pick<Product, "id" | "name" | "price" | "image_url" | "size"> {
+  extends Pick<Product, "id" | "name" | "price" | "image_url"> {
+  selectedSize: string;
   quantity: number;
 }
 
