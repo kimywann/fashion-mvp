@@ -25,3 +25,13 @@ export {
 } from "./select";
 export { Toaster } from "./sonner";
 export { Textarea } from "./textarea";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "./table";
