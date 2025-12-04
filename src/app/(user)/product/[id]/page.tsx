@@ -12,6 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Spinner,
 } from "@/components/ui";
 import type { CartItem, Product } from "@/types";
 import { useDispatch } from "react-redux";
@@ -77,11 +78,16 @@ export default function ProductDetailPage() {
     toast.success("장바구니에 추가되었습니다.");
   };
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading)
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <Spinner className="size-20" />
+      </div>
+    );
   if (!product) return <div>상품을 찾을 수 없습니다.</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* 왼쪽: 상품 이미지 섹션 */}
         <section className="flex flex-col gap-4">

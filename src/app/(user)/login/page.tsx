@@ -57,10 +57,11 @@ export default function LoginPage() {
         return;
       }
 
-      dispatch(setUser(data.user));
-      toast.success("로그인을 완료하였습니다.");
-      router.push("/");
-      router.refresh();
+      if (data.user) {
+        dispatch(setUser(data.user));
+        toast.success("로그인을 완료하였습니다.");
+        router.replace("/");
+      }
     } catch (error) {
       console.error("로그인 오류:", error);
     }

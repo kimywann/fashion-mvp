@@ -1,20 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
 import type { Product } from "@/types";
-import { toast } from "sonner";
-import Image from "next/image";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui";
-import { SquareCheck } from "lucide-react";
+import { toast } from "sonner";
 
 const supabase = createClient();
 
