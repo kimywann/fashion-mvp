@@ -14,21 +14,37 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      state.items.push(action.payload);
+      const newItem = action.payload;
+      const existingItem = state.items.find(
+        (item) =>
+          item.id === newItem.id && item.selectedSize === newItem.selectedSize
+      );
+
+      if (existingItem) {
+        // 같은 상품과 사이즈가 이미 있으면 수량만 증가
+        existingItem.quantity += newItem.quantity;
+      } else {
+        // 없으면 새로 추가
+        state.items.push(newItem);
+      }
     },
     removeItem: (state, action) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      const { productId, selectedSize } = action.payload;
+      state.items = state.items.filter(
+        (item) => !(item.id === productId && item.selectedSize === selectedSize)
+      );
     },
     updateItemQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === id);
+      const { productId, selectedSize, quantity } = action.payload;
+      const item = state.items.find(
+        (item) => item.id === productId && item.selectedSize === selectedSize
+      );
       if (item) {
         item.quantity = quantity;
       }
     },
   },
 });
-
 
 export const { addItem, removeItem, updateItemQuantity } = cartSlice.actions;
 export default cartSlice.reducer;
