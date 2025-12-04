@@ -35,3 +35,4 @@ export {
   TableCell,
   TableCaption,
 } from "./table";
+export { Spinner } from "./spinner";

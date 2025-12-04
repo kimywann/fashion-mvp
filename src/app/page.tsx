@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Product } from "@/types";
 import { ProductCard } from "@/components/ProductCard";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -30,14 +31,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container">
       <h1 className="mb-6 text-2xl font-bold">New Products</h1>
       {products.length === 0 ? (
-        <div className="flex items-center justify-center py-8">
-          <p className="text-muted-foreground">상품이 없습니다.</p>
+        <div className="flex h-96 items-center justify-center">
+          <Spinner className="size-20" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {products.map((product) => (
             <ProductCard
               key={product.id}
