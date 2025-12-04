@@ -1,3 +1,5 @@
+"use client";
+
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
@@ -6,7 +8,6 @@ import type { RootState, AppDispatch } from "@/store";
 import { clearUser } from "@/store/slices/userSlice";
 
 import { Heart, LogIn, LogOut, ShoppingCart, User } from "lucide-react";
-import { toast } from "sonner";
 
 export const Header = () => {
   const supabase = createClient();
@@ -19,8 +20,7 @@ export const Header = () => {
   const handleLogout = () => {
     dispatch(clearUser());
     supabase.auth.signOut();
-
-    toast.success("로그아웃을 완료하였습니다.");
+    window.location.href = "/";
   };
 
   return (
