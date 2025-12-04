@@ -33,7 +33,7 @@ interface DeliveryInfoFormProps {
   defaultValues?: Partial<DeliveryInfoFormData>;
 }
 
-export function DeliveryInfoForm({ onSubmit }: DeliveryInfoFormProps) {
+export const DeliveryInfoForm = ({ onSubmit }: DeliveryInfoFormProps) => {
   const form = useForm<DeliveryInfoFormData>({
     resolver: zodResolver(deliveryInfoSchema),
     defaultValues: {
@@ -157,4 +157,4 @@ export function DeliveryInfoForm({ onSubmit }: DeliveryInfoFormProps) {
       </form>
     </Form>
   );
-}
+};

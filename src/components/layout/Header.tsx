@@ -1,16 +1,15 @@
-import { Heart, LogIn, LogOut, ShoppingCart, User } from "lucide-react";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { clearUser } from "@/store/slices/userSlice";
-import { AppDispatch } from "@/store";
+import Link from "next/link";
 
-export default function Header() {
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "@/store";
+import { clearUser } from "@/store/slices/userSlice";
+
+import { Heart, LogIn, LogOut, ShoppingCart, User } from "lucide-react";
+import { toast } from "sonner";
+
+export const Header = () => {
   const supabase = createClient();
-  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(
@@ -20,7 +19,8 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(clearUser());
     supabase.auth.signOut();
-    router.push("/");
+
+    toast.success("로그아웃을 완료하였습니다.");
   };
 
   return (
@@ -60,4 +60,4 @@ export default function Header() {
       </ul>
     </header>
   );
-}
+};

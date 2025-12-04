@@ -1,5 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { Footer, Header } from "@/components/layout";
 
 export default function UserLayout({
   children,

@@ -10,12 +10,12 @@ interface OrderSummaryProps {
   className?: string;
 }
 
-export function OrderSummary({
+export const OrderSummary = ({
   items,
   buttonText,
   onAction,
   className = "",
-}: OrderSummaryProps) {
+}: OrderSummaryProps) => {
   const totalAmount = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -32,4 +32,4 @@ export function OrderSummary({
       </Button>
     </section>
   );
-}
+};

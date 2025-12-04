@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/select";
 import { CATEGORIES } from "@/lib/constants";
 
-export function CategorySelector({
+export const CategorySelector = ({
   value,
   onChange,
 }: {
   value: string;
   onChange: (val: string) => void;
-}) {
+}) => {
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
@@ -30,6 +30,4 @@ export function CategorySelector({
       </SelectContent>
     </Select>
   );
-}
-
-export default CategorySelector;
+};

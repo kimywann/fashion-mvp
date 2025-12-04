@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui";
 import { ChevronRight } from "lucide-react";
 
-import { OrderSummary } from "@/components/OrderSummary";
+import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { useDispatch, useSelector } from "react-redux";
 import { removeItem, updateItemQuantity } from "@/store/slices/cartSlice";
 import { RootState } from "@/store";

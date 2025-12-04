@@ -40,7 +40,7 @@ const menuItems = [
   //   },
 ];
 
-export default function AdminSideBar() {
+export const AdminSideBar = () => {
   const pathname = usePathname();
 
   return (
@@ -95,4 +95,4 @@ export default function AdminSideBar() {
       </div>
     </aside>
   );
-}
+};

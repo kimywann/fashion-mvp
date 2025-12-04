@@ -8,7 +8,12 @@ type ProductCardProps = {
   imageUrl: string;
 };
 
-export function ProductCard({ id, name, price, imageUrl }: ProductCardProps) {
+export const ProductCard = ({
+  id,
+  name,
+  price,
+  imageUrl,
+}: ProductCardProps) => {
   return (
     <div className="rounded-xl transition hover:scale-105">
       <Link href={`/product/${id}`} className="block">
@@ -34,4 +39,4 @@ export function ProductCard({ id, name, price, imageUrl }: ProductCardProps) {
       </Link>
     </div>
   );
-}
+};

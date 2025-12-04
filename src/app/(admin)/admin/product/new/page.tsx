@@ -1,9 +1,11 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
+
 import {
   Button,
   Form,
@@ -15,13 +17,10 @@ import {
   Input,
   Textarea,
 } from "@/components/ui";
+import { FileUpload, CategorySelector, SizeSelector } from "@/components/admin";
 
-import { FileUpload } from "@/components/FileUpload";
 import { toast } from "sonner";
-import SizeSelector from "@/components/SizeSelector";
-import CategorySelector from "@/components/CategorySelector";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해 주세요."),

@@ -10,7 +10,7 @@ interface Props {
   onChange: (file: File | string | null) => void;
 }
 
-export function FileUpload({ value, onChange }: Props) {
+export const FileUpload = ({ value, onChange }: Props) => {
   const FileinputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,4 +67,4 @@ export function FileUpload({ value, onChange }: Props) {
       />
     </div>
   );
-}
+};

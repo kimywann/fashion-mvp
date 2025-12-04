@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { OrderSummary } from "@/components/OrderSummary";
-import { DeliveryInfoForm } from "@/components/DeliveryInfoForm";
-import type { DeliveryInfoFormData } from "@/components/DeliveryInfoForm";
+import { OrderSummary, DeliveryInfoForm } from "@/components/checkout";
+import type { DeliveryInfoFormData } from "@/components/checkout/DeliveryInfoForm";
 
 import type { CartItem } from "@/types";
 import { ChevronRight } from "lucide-react";

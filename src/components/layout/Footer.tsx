@@ -1,4 +1,4 @@
-export default function Footer() {
+export const Footer = () => {
   return (
     <footer className="border-t">
       <div className="m-6">
@@ -6,4 +6,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};

@@ -1,6 +1,6 @@
 import { CATEGORY_SIZES, DEFAULT_SIZES } from "@/lib/constants";
 
-export function SizeSelector({
+export const SizeSelector = ({
   value,
   onChange,
   category,
@@ -8,7 +8,7 @@ export function SizeSelector({
   value: string[];
   onChange: (val: string[]) => void;
   category?: string;
-}) {
+}) => {
   const sizes =
     category && CATEGORY_SIZES[category]
       ? CATEGORY_SIZES[category]
@@ -40,6 +40,6 @@ export function SizeSelector({
       ))}
     </div>
   );
-}
+};
 
 export default SizeSelector;

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Product } from "@/types";
-import { ProductCard } from "@/components/ProductCard";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { ProductCard } from "@/components/product";
 import { Spinner } from "@/components/ui";
+import { toast } from "sonner";
+import type { Product } from "@/types";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
