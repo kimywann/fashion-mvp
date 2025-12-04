@@ -60,7 +60,12 @@ export default function LoginPage() {
       if (data.user) {
         dispatch(setUser(data.user));
         toast.success("로그인을 완료하였습니다.");
-        router.replace("/");
+
+        // 쿼리 파라미터에서 redirect 경로 가져오기
+        const searchParams = new URLSearchParams(window.location.search);
+        const redirectPath = searchParams.get("redirect") || "/";
+
+        router.replace(redirectPath);
       }
     } catch (error) {
       console.error("로그인 오류:", error);
