@@ -5,6 +5,10 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { setUser } from "@/store/slices/userSlice";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -40,7 +44,8 @@ const formSchema = z
   });
 
 export default function SignupPage() {
-  const supabase = createClient(); // 브라우저에서 실행
+  const supabase = createClient();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,7 +58,7 @@ export default function SignupPage() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSignup = async (values: z.infer<typeof formSchema>) => {
     try {
       const {
         data: { user },
@@ -78,9 +83,10 @@ export default function SignupPage() {
         return;
       }
 
-      toast.success("회원가입을 완료하였습니다. 이메일을 확인해주세요.");
-      router.push("/login");
-      router.refresh();
+      dispatch(setUser(user));
+
+      router.push("/");
+      toast.success("회원가입을 완료하였습니다.");
     } catch (error) {
       console.error("회원가입 오류:", error);
       toast.error("회원가입 중 오류가 발생했습니다.");
@@ -101,7 +107,11 @@ export default function SignupPage() {
         <div className="grid gap-3">
           {/* 회원가입 폼 */}
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(handleSignup)}
+              className="space-y-4"
+            >
+              {/* 이메일 */}
               <FormField
                 control={form.control}
                 name="email"
@@ -115,6 +125,8 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
+
+              {/* 닉네임 */}
               <FormField
                 control={form.control}
                 name="nickname"
@@ -128,6 +140,8 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
+
+              {/* 비밀번호 */}
               <FormField
                 control={form.control}
                 name="password"
@@ -145,6 +159,8 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
+
+              {/* 비밀번호 확인 */}
               <FormField
                 control={form.control}
                 name="confirmPassword"
