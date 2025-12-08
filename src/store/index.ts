@@ -23,7 +23,7 @@ const userPersistConfig = {
   key: "user",
   version: 1,
   storage,
-  whitelist: ["isAuthenticated"],
+  whitelist: ["isAuthenticated", "nickname"],
 };
 
 const persistedCartReducer = persistReducer(persistConfig, cartReducer);

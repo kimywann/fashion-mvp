@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/store";
 import { clearUser } from "@/store/slices/userSlice";
 
-import { Heart, LogIn, LogOut, ShoppingCart, User } from "lucide-react";
+import { LogIn, LogOut, ShoppingCart, User } from "lucide-react";
 
 export const Header = () => {
   const supabase = createClient();
@@ -16,6 +16,7 @@ export const Header = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.isAuthenticated
   );
+  const nickname = useSelector((state: RootState) => state.user.nickname);
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -29,6 +30,9 @@ export const Header = () => {
         <img src="/images/logo.svg" alt="로고" className="w-40" />
       </Link>
       <ul className="m-3 flex gap-4">
+        {isAuthenticated && (
+          <li aria-label="닉네임">{nickname}님 환영합니다.</li>
+        )}
         <li aria-label="장바구니">
           <Link href="/cart">
             <ShoppingCart />
