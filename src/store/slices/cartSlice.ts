@@ -43,8 +43,13 @@ export const cartSlice = createSlice({
         item.quantity = quantity;
       }
     },
+    setCartItems: (state, action) => {
+      // DB에서 가져온 장바구니로 전체 교체
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addItem, removeItem, updateItemQuantity } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity, setCartItems } =
+  cartSlice.actions;
 export default cartSlice.reducer;
