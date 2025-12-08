@@ -1,5 +1,7 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { createClient } from "@/lib/supabase/client";
 
 import Link from "next/link";
@@ -35,6 +37,7 @@ export default function LoginPage() {
   const supabase = createClient(); // 브라우저에서 실행
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient();
 
   // Redux에서 현재 장바구니 아이템 가져오기
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -69,6 +72,9 @@ export default function LoginPage() {
             "@/utils/mergeLocalCartToServer"
           );
           await mergeLocalCartToServer(data.user.id, cartItems);
+
+          // TanStack Query 캐시 무효화 → 헤더 장바구니 개수 즉시 업데이트
+          queryClient.invalidateQueries({ queryKey: ["cart", data.user.id] });
         }
 
         // 쿼리 파라미터에서 redirect 경로 가져오기
