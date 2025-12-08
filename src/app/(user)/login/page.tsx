@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
 import { setUser } from "@/store/slices/userSlice";
 
 import {
@@ -36,6 +36,9 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
+  // Redux에서 현재 장바구니 아이템 가져오기
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +47,7 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleLogin = async (values: z.infer<typeof formSchema>) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
@@ -59,13 +62,21 @@ export default function LoginPage() {
 
       if (data.user) {
         dispatch(setUser(data.user));
-        toast.success("로그인을 완료하였습니다.");
+
+        // 로컬 장바구니를 DB에 동기화
+        if (cartItems.length > 0) {
+          const { mergeLocalCartToServer } = await import(
+            "@/utils/mergeLocalCartToServer"
+          );
+          await mergeLocalCartToServer(data.user.id, cartItems);
+        }
 
         // 쿼리 파라미터에서 redirect 경로 가져오기
         const searchParams = new URLSearchParams(window.location.search);
         const redirectPath = searchParams.get("redirect") || "/";
 
         router.replace(redirectPath);
+        toast.success("로그인을 완료하였습니다.");
       }
     } catch (error) {
       console.error("로그인 오류:", error);
@@ -86,7 +97,10 @@ export default function LoginPage() {
         <div className="grid gap-3">
           {/* 회원가입 폼 */}
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(handleLogin)}
+              className="space-y-4"
+            >
               <FormField
                 control={form.control}
                 name="email"
