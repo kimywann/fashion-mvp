@@ -8,6 +8,7 @@ import type { RootState, AppDispatch } from "@/store";
 import { clearUser } from "@/store/slices/userSlice";
 
 import { LogIn, LogOut, ShoppingCart, User } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
 
 export const Header = () => {
   const supabase = createClient();
@@ -17,6 +18,7 @@ export const Header = () => {
     (state: RootState) => state.user.isAuthenticated
   );
   const nickname = useSelector((state: RootState) => state.user.nickname);
+  const { items } = useCart();
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -33,9 +35,14 @@ export const Header = () => {
         {isAuthenticated && (
           <li aria-label="닉네임">{nickname}님 환영합니다.</li>
         )}
-        <li aria-label="장바구니">
-          <Link href="/cart">
+        <li aria-label="장바구니" className="relative">
+          <Link href="/cart" className="relative inline-block">
             <ShoppingCart />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-2 rounded-full bg-red-500 px-1 text-xs text-white">
+                {items.length}
+              </span>
+            )}
           </Link>
         </li>
         {!isAuthenticated ? (
