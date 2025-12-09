@@ -39,10 +39,7 @@ export const createClient = async (
   } = await supabase.auth.getUser();
 
   // 로그인 필요한 페이지 보호
-  if (
-    (!user && request.nextUrl.pathname.startsWith("/like")) ||
-    request.nextUrl.pathname.startsWith("/profile")
-  ) {
+  if (!user && request.nextUrl.pathname.startsWith("/profile")) {
     const redirectUrl = new URL("/login", request.url);
     return NextResponse.redirect(redirectUrl);
   }
