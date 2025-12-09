@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useAddCartItem } from "@/hooks/useCartMutations";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { addItem } from "@/store/slices/cartSlice";
-import { useAddCartItem } from "@/hooks/useCartMutations";
+
 import { toast } from "sonner";
-import type { CartItem, Product } from "@/types";
+
+import type { CartItem } from "@/types/cartItem.model";
+import type { Product } from "@/types/product.model";
 
 export const useAddToCart = () => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);

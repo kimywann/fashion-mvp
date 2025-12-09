@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { CartItem } from "@/types";
+import type { CartItem } from "@/types/cartItem.model";
 
 export interface CartState {
   items: CartItem[];

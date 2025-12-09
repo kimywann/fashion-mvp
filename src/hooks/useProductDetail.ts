@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import { Product } from "@/types";
+import type { Product } from "@/types/product.model";
 
 interface UseProductDetailProps {
   productId: string | string[] | undefined;
