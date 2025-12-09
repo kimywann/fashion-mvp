@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/lib/ReduxProvider";
+import AuthProvider from "@/lib/AuthProvider";
 import QueryProvider from "@/lib/QueryProvider";
 import { Toaster } from "sonner";
 
@@ -31,10 +32,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxProvider>
-          <QueryProvider>
-            {children}
-            <Toaster richColors position="top-center" />
-          </QueryProvider>
+          <AuthProvider>
+            <QueryProvider>
+              {children}
+              <Toaster richColors position="top-center" />
+            </QueryProvider>
+          </AuthProvider>
         </ReduxProvider>
       </body>
     </html>
