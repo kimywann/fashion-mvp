@@ -70,7 +70,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* 왼쪽: 상품 이미지 섹션 */}
         <section className="flex flex-col gap-4">
@@ -99,7 +99,7 @@ export default function ProductDetailPage() {
                   <SelectValue placeholder="사이즈 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  {product.size?.map((size) => (
+                  {product.size?.map((size: string) => (
                     <SelectItem key={size} value={size}>
                       {size}
                     </SelectItem>

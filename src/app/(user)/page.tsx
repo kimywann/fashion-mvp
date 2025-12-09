@@ -16,7 +16,7 @@ export default function Home() {
   }
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold">New Products</h1>
       {products?.length === 0 ? (
         <div className="flex h-96 items-center justify-center">
