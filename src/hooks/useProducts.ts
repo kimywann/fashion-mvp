@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import type { Product } from "@/types";
+import type { Product } from "@/types/product.model";
 
 export const useProducts = () => {
   const supabase = createClient();
@@ -10,7 +10,8 @@ export const useProducts = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, price, image_url");
+        .select("id, name, price, image_url")
+        .order("created_at", { ascending: false });
 
       if (error) {
         throw new Error(error.message);
