@@ -34,7 +34,7 @@ export default function CompletePage() {
           <Button
             className="flex-1 cursor-pointer"
             variant="outline"
-            onClick={() => router.push("/profile")}
+            onClick={() => (window.location.href = "/profile")}
           >
             마이페이지로 이동
           </Button>
