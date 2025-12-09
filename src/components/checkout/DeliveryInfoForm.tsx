@@ -31,9 +31,13 @@ export type DeliveryInfoFormData = z.infer<typeof deliveryInfoSchema>;
 interface DeliveryInfoFormProps {
   onSubmit: (data: DeliveryInfoFormData) => void;
   defaultValues?: Partial<DeliveryInfoFormData>;
+  formId?: string;
 }
 
-export const DeliveryInfoForm = ({ onSubmit }: DeliveryInfoFormProps) => {
+export const DeliveryInfoForm = ({
+  onSubmit,
+  formId,
+}: DeliveryInfoFormProps) => {
   const form = useForm<DeliveryInfoFormData>({
     resolver: zodResolver(deliveryInfoSchema),
     defaultValues: {
@@ -60,7 +64,11 @@ export const DeliveryInfoForm = ({ onSubmit }: DeliveryInfoFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        id={formId}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4"
+      >
         {/* 수령인 */}
         <FormField
           control={form.control}

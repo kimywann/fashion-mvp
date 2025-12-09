@@ -10,6 +10,7 @@ import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { CartList } from "@/components/checkout/CartList";
 import { ChevronRight } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { Button } from "@/components/ui";
 import {
   useUpdateCartItemQuantity,
   useRemoveCartItem,
@@ -100,11 +101,14 @@ export default function CartPage() {
 
           {/* 결제 요약 */}
           <section className="w-full lg:w-1/3">
-            <OrderSummary
-              items={products}
-              buttonText="주문하기"
-              onAction={handleGoToCheckout}
-            />
+            <OrderSummary items={products}>
+              <Button
+                className="mt-4 w-full cursor-pointer"
+                onClick={handleGoToCheckout}
+              >
+                주문하기
+              </Button>
+            </OrderSummary>
           </section>
         </div>
       )}
