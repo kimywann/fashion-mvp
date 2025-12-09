@@ -7,10 +7,10 @@ export interface OrderItem {
 }
 
 export interface Order {
-  id: number;
+  id: string;
   user_id: string;
   items: OrderItem[];
-  delivery_info: DeliveryInfo;
+  delivery_info?: DeliveryInfo | null;
   total_price: number;
   created_at: string;
 }
