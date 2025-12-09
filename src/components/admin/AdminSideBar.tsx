@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingBag,
-  Users,
-  Settings,
-  Home,
-} from "lucide-react";
+import { LayoutDashboard, Package, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
@@ -23,21 +16,6 @@ const menuItems = [
     href: "/admin/product/new",
     icon: Package,
   },
-  //   {
-  //     title: "주문 관리",
-  //     href: "/admin/orders",
-  //     icon: ShoppingBag,
-  //   },
-  //   {
-  //     title: "사용자 관리",
-  //     href: "/admin/users",
-  //     icon: Users,
-  //   },
-  //   {
-  //     title: "설정",
-  //     href: "/admin/settings",
-  //     icon: Settings,
-  //   },
 ];
 
 export const AdminSideBar = () => {
