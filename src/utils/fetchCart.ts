@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import type { CartItem } from "@/types";
+import type { CartItem } from "@/types/cart-item.model";
 
 /**
  * DB에서 사용자의 장바구니를 조회하고 CartItem 형식으로 변환합니다.
