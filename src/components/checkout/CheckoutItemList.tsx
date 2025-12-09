@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CartItem } from "@/types/cartItem.model";
+import type { CartItem } from "@/types/cart-item.model";
 
 interface CheckoutItemListProps {
   items: CartItem[];

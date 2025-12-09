@@ -8,7 +8,7 @@ import { addItem } from "@/store/slices/cartSlice";
 
 import { toast } from "sonner";
 
-import type { CartItem } from "@/types/cartItem.model";
+import type { CartItem } from "@/types/cart-item.model";
 import type { Product } from "@/types/product.model";
 
 export const useAddToCart = () => {

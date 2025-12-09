@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui";
-import type { CartItem } from "@/types/cartItem.model";
+import type { CartItem } from "@/types/cart-item.model";
 
 export const CartList = ({
   products,

@@ -1,6 +1,6 @@
 "use client";
 
-import { CartItem } from "@/types/cartItem.model";
+import type { CartItem } from "@/types/cart-item.model";
 import { calculateTotalPrice } from "@/utils/price";
 
 interface OrderSummaryProps {

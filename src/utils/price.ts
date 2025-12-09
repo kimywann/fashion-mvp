@@ -1,4 +1,4 @@
-import type { CartItem } from "@/types/cartItem.model";
+import type { CartItem } from "@/types/cart-item.model";
 
 /**
  * 장바구니 아이템들의 총 금액을 계산합니다
