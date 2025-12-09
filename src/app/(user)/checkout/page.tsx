@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui";
 
 import { ChevronRight } from "lucide-react";
+import { useClearCart } from "@/hooks/useCartMutations";
 import { useCart } from "@/hooks/useCart";
 import { createClient } from "@/lib/supabase/client";
 import { calculateTotalPrice } from "@/utils/price";
@@ -28,6 +29,7 @@ export default function CheckoutPage() {
   const checkoutFormId = "checkout-form";
 
   const user = useSelector((state: RootState) => state.user.user);
+  const clearCartMutation = useClearCart(user?.id);
 
   // 로그인 체크
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function CheckoutPage() {
     const { data, error } = await supabase
       .from("orders")
       .insert({
-        user_id: user?.id, // Redux에서 가져온 user
+        user_id: user?.id,
         items: items.map((item) => ({
           id: item.id,
           name: item.name,
@@ -81,6 +83,9 @@ export default function CheckoutPage() {
       toast.error("주문 실패");
       return;
     }
+
+    // 장바구니 비우기
+    await clearCartMutation.mutateAsync();
 
     router.push(`/checkout/complete?orderId=${data.id}`);
   };

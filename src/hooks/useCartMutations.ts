@@ -177,3 +177,44 @@ export const useAddCartItem = (userId?: string) => {
     },
   });
 };
+
+/**
+ * 장바구니 전체 비우기 Mutation (주문 완료 시 사용)
+ */
+export const useClearCart = (userId?: string) => {
+  const queryClient = useQueryClient();
+  const supabase = createClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!userId) throw new Error("User not logged in");
+
+      const { error } = await supabase
+        .from("cart")
+        .delete()
+        .eq("user_id", userId);
+
+      if (error) throw error;
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ["cart", userId] });
+
+      const previousCart = queryClient.getQueryData<CartItem[]>([
+        "cart",
+        userId,
+      ]);
+
+      queryClient.setQueryData<CartItem[]>(["cart", userId], []);
+
+      return { previousCart };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(["cart", userId], context.previousCart);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart", userId] });
+    },
+  });
+};
