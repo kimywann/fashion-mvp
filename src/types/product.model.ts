@@ -6,4 +6,5 @@ export interface Product {
   category: string;
   size: string[];
   description: string;
+  created_at: string;
 }
