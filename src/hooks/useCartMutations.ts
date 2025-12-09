@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import type { CartItem } from "@/types";
-
+import { CartItem } from "@/types/cartItem.model";
 /**
  * 장바구니 수량 업데이트 Mutation
  */
