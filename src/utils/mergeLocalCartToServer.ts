@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import type { CartItem } from "@/types";
+import type { CartItem } from "@/types/cart-item.model";
 
 interface MergeCartResult {
   success: boolean;
