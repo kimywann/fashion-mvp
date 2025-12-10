@@ -8,7 +8,7 @@ import type { RootState, AppDispatch } from "@/store";
 import { clearUser } from "@/store/slices/userSlice";
 
 import { LogIn, LogOut, ShoppingCart, User } from "lucide-react";
-import { useCart } from "@/hooks/useCart";
+import { useCartSource } from "@/hooks/useCartSource";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
@@ -19,7 +19,7 @@ export const Header = () => {
     (state: RootState) => state.user.isAuthenticated
   );
   const nickname = useSelector((state: RootState) => state.user.nickname);
-  const { items } = useCart();
+  const { items } = useCartSource();
   const router = useRouter();
 
   const handleLogout = async () => {

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui";
 
 import { ChevronRight } from "lucide-react";
 import { useClearCart } from "@/hooks/useCartMutations";
-import { useCart } from "@/hooks/useCart";
+import { useCartSource } from "@/hooks/useCartSource";
 import { createClient } from "@/lib/supabase/client";
 import { calculateTotalPrice } from "@/utils/price";
 import { DeliveryInfoFormData } from "@/components/checkout/DeliveryInfoForm";
@@ -24,7 +24,7 @@ import { toast } from "sonner";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, isLoading } = useCart();
+  const { items } = useCartSource();
 
   const checkoutFormId = "checkout-form";
 

@@ -9,7 +9,7 @@ import { removeItem, updateItemQuantity } from "@/store/slices/cartSlice";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { CartList } from "@/components/checkout/CartList";
 import { ChevronRight } from "lucide-react";
-import { useCart } from "@/hooks/useCart";
+import { useCartSource } from "@/hooks/useCartSource";
 import { Button } from "@/components/ui";
 import {
   useUpdateCartItemQuantity,
@@ -21,7 +21,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
 
   // 통합 장바구니 Hook (로그인/비로그인 자동 처리)
-  const { items: products, isLoading, isServerCart } = useCart();
+  const { items: products, isLoading, isServerCart } = useCartSource();
   const user = useSelector((state: RootState) => state.user.user);
 
   // 서버 장바구니 mutations (낙관적 업데이트)
