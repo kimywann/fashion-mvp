@@ -82,6 +82,7 @@ export default function LoginPage() {
         const redirectPath = searchParams.get("redirect") || "/";
 
         router.replace(redirectPath);
+        router.refresh();
         toast.success("로그인을 완료하였습니다.");
       }
     } catch (error) {
