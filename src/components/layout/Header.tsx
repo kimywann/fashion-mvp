@@ -9,6 +9,7 @@ import { clearUser } from "@/store/slices/userSlice";
 
 import { LogIn, LogOut, ShoppingCart, User } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
   const supabase = createClient();
@@ -19,11 +20,24 @@ export const Header = () => {
   );
   const nickname = useSelector((state: RootState) => state.user.nickname);
   const { items } = useCart();
+  const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(clearUser());
-    supabase.auth.signOut();
-    window.location.href = "/";
+  const handleLogout = async () => {
+    try {
+      // 1) Supabase 로그아웃
+      await supabase.auth.signOut();
+
+      // 2) Redux user 상태 초기화
+      dispatch(clearUser());
+
+      // 3) 서버 세션을 다시 읽도록 강제 refresh
+      router.refresh();
+
+      // 4) 페이지 이동
+      router.replace("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
