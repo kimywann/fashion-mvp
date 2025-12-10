@@ -6,7 +6,9 @@ import type { CartItem } from "@/types/cart-item.model";
  * @param userId - 사용자 ID
  * @returns CartItem 배열
  */
-export const fetchCart = async (userId: string): Promise<CartItem[]> => {
+export const getServerCartItems = async (
+  userId: string
+): Promise<CartItem[]> => {
   const supabase = createClient();
 
   try {
