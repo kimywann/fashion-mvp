@@ -21,7 +21,7 @@ export default function CartPage() {
   const dispatch = useDispatch();
 
   // 통합 장바구니 Hook (로그인/비로그인 자동 처리)
-  const { items: products, isLoading, isServerCart } = useCartSource();
+  const { items: products, isLoading, source } = useCartSource();
   const user = useSelector((state: RootState) => state.user.user);
 
   // 서버 장바구니 mutations (낙관적 업데이트)
@@ -37,7 +37,7 @@ export default function CartPage() {
       return; // 수량이 1 미만이면 무시
     }
 
-    if (isServerCart) {
+    if (source === "server") {
       // 로그인: TanStack Query mutation (낙관적 업데이트)
       updateQuantityMutation.mutate({
         productId,
@@ -53,7 +53,7 @@ export default function CartPage() {
   };
 
   const handleRemoveItem = async (productId: number, selectedSize: string) => {
-    if (isServerCart) {
+    if (source === "server") {
       // 로그인: TanStack Query mutation (낙관적 삭제)
       removeItemMutation.mutate({ productId, selectedSize });
     } else {
