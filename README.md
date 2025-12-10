@@ -40,6 +40,10 @@
 <img src="./public/images/admin2.png" alt="프로젝트 시연" width="500" />
 <img src="./public/images/admin3.png" alt="프로젝트 시연" width="500" />
 
+### 로컬 · 서버 장바구니 통합
+
+<img src="./public/images/merge-local-to-server-cart.gif" alt="프로젝트 시연" width="500" />
+
 ### 상품 주문 플로우
 
 <img src="./public/images/order1.gif" alt="프로젝트 시연" width="500" />
