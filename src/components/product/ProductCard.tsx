@@ -30,8 +30,7 @@ export const ProductCard = ({
 
         {/* 아래 텍스트 */}
         <div className="p-3">
-          <h3 className="truncate text-sm font-medium text-gray-900">{name}</h3>
-
+          <p className="truncate text-sm font-medium text-gray-900">{name}</p>
           <p className="mt-1 text-xl font-bold text-gray-800">
             {price.toLocaleString()}
           </p>
