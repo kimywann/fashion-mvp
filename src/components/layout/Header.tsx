@@ -45,39 +45,49 @@ export const Header = () => {
       <Link href="/">
         <img src="/images/logo.svg" alt="로고" className="w-40" />
       </Link>
-      <ul className="m-3 flex gap-4">
-        {isAuthenticated && (
-          <li aria-label="닉네임">{nickname}님 환영합니다.</li>
-        )}
-        <li aria-label="장바구니" className="relative">
-          <Link href="/cart" className="relative inline-block">
-            <ShoppingCart />
-            {items.length > 0 && (
-              <span className="absolute -top-1 -right-2 rounded-full bg-red-500 px-1 text-xs text-white">
-                {items.length}
-              </span>
-            )}
-          </Link>
-        </li>
-        {!isAuthenticated ? (
-          <li aria-label="로그인">
-            <Link href="/login">
-              <LogIn />
+      <nav>
+        <ul className="m-3 flex gap-4">
+          {isAuthenticated && (
+            <li aria-label="닉네임">{nickname}님 환영합니다.</li>
+          )}
+          <li className="relative">
+            <Link
+              href="/cart"
+              aria-label="장바구니"
+              className="relative inline-block"
+            >
+              <ShoppingCart />
+              {items.length > 0 && (
+                <span className="absolute -top-1 -right-2 rounded-full bg-red-500 px-1 text-xs text-white">
+                  {items.length}
+                </span>
+              )}
             </Link>
           </li>
-        ) : (
-          <li aria-label="로그아웃">
-            <button onClick={handleLogout} className="cursor-pointer">
-              <LogOut />
-            </button>
+          {!isAuthenticated ? (
+            <li>
+              <Link href="/login" aria-label="로그인">
+                <LogIn />
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={handleLogout}
+                aria-label="로그아웃"
+                className="cursor-pointer"
+              >
+                <LogOut />
+              </button>
+            </li>
+          )}
+          <li>
+            <Link href="/profile" aria-label="프로필">
+              <User />
+            </Link>
           </li>
-        )}
-        <li aria-label="프로필">
-          <Link href="/profile">
-            <User />
-          </Link>
-        </li>
-      </ul>
+        </ul>
+      </nav>
     </header>
   );
 };
