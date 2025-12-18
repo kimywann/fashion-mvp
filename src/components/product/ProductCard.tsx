@@ -18,7 +18,7 @@ export const ProductCard = ({
     <div className="rounded-xl transition hover:scale-105">
       <Link href={`/product/${id}`} className="block">
         {/* 상단 이미지 영역 */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-lg">
+        <div className="relative aspect-4/5 w-full overflow-hidden rounded-t-lg">
           <Image
             src={imageUrl}
             alt={name}
