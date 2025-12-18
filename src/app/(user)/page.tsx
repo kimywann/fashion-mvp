@@ -42,7 +42,7 @@ export default function Home() {
           <button
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
-            className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+            className="cursor-pointer rounded bg-black px-4 py-2 text-white disabled:opacity-50"
           >
             {isFetchingNextPage ? "Loading..." : "Load More"}
           </button>
