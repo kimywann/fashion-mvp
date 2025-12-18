@@ -3,6 +3,7 @@
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/product";
 import { Spinner } from "@/components/ui";
+import { ProductCardSkeleton } from "@/components/product/ProductCardSkeleton";
 
 export default function Home() {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -16,8 +17,10 @@ export default function Home() {
 
       <div className="relative min-h-[600px]">
         {isLoading ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Spinner className="size-20" />
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
