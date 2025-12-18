@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { Product } from "@/types/product.model";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 40;
 
 export const useProducts = () => {
   const supabase = createClient();
