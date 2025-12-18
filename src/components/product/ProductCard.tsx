@@ -6,6 +6,7 @@ type ProductCardProps = {
   name: string;
   price: number;
   imageUrl: string;
+  priority?: boolean;
 };
 
 export const ProductCard = ({
@@ -13,6 +14,7 @@ export const ProductCard = ({
   name,
   price,
   imageUrl,
+  priority,
 }: ProductCardProps) => {
   return (
     <div className="rounded-xl transition hover:scale-105">
@@ -25,6 +27,7 @@ export const ProductCard = ({
             fill
             className="object-cover transition-transform"
             sizes="(max-width: 768px) 50vw, 25vw"
+            priority={priority}
           />
         </div>
 

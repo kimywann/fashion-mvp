@@ -2,7 +2,6 @@
 
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/product";
-import { Spinner } from "@/components/ui";
 import { ProductCardSkeleton } from "@/components/product/ProductCardSkeleton";
 
 export default function Home() {
@@ -24,13 +23,14 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {products.map((product) => (
+            {products.map((product, index) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
                 name={product.name}
                 price={product.price}
                 imageUrl={product.image_url}
+                priority={index < 10}
               />
             ))}
           </div>
