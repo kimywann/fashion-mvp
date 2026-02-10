@@ -17,7 +17,7 @@ export const CategorySelector = ({
   onChange: (val: string) => void;
 }) => {
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select value={value} onValueChange={onChange} aria-label="카테고리 선택">
       <SelectTrigger className="w-full">
         <SelectValue placeholder="카테고리를 선택해주세요." />
       </SelectTrigger>
