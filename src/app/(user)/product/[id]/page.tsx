@@ -1,124 +1,113 @@
-"use client";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { cache } from "react";
+import { createClient } from "@/lib/supabase/server";
+import type { Product } from "@/types/product.model";
+import ProductDetailClient from "./ProductDetailClient";
 
-import { useState } from "react";
-import { useParams } from "next/navigation";
-import { useProductDetail } from "@/hooks/useProductDetail";
-import { useAddToCart } from "@/hooks/useAddToCart";
-import Image from "next/image";
+type PageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Spinner,
-} from "@/components/ui";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-export default function ProductDetailPage() {
-  const params = useParams();
-  const productId = params.id;
-  const [selectedSize, setSelectedSize] = useState<string>("");
+const toAbsoluteUrl = (value: string) => {
+  try {
+    return new URL(value).toString();
+  } catch {
+    return new URL(value, SITE_URL).toString();
+  }
+};
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-    error,
-  } = useProductDetail({ productId });
+const parseSize = (size: Product["size"] | string | null) => {
+  if (Array.isArray(size)) return size;
+  if (typeof size !== "string") return [];
 
-  const { addToCart, isAddingToCart } = useAddToCart();
+  try {
+    const parsed = JSON.parse(size);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product, selectedSize);
-    }
+const getProductById = cache(async (id: string) => {
+  const productId = id.trim();
+  if (!productId) return null;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", productId)
+    .single();
+
+  if (error || !data) return null;
+
+  return {
+    ...(data as Product),
+    size: parseSize(data.size),
   };
+});
 
-  // 로딩 상태
-  if (isLoading) {
-    return (
-      <div className="flex h-96 items-center justify-center">
-        <Spinner className="size-20" />
-      </div>
-    );
-  }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProductById(id);
 
-  // 에러 상태
-  if (isError) {
-    return (
-      <div className="flex h-96 flex-col items-center justify-center gap-4">
-        <p className="text-lg text-red-600">
-          상품 정보를 불러오는데 실패했습니다.
-        </p>
-        <p className="text-sm text-gray-500">
-          {error instanceof Error ? error.message : "알 수 없는 오류"}
-        </p>
-        <Button onClick={() => window.location.reload()}>다시 시도</Button>
-      </div>
-    );
-  }
-
-  // 상품 데이터가 없는 경우
   if (!product) {
-    return (
-      <div className="flex h-96 items-center justify-center">
-        <p className="text-lg text-gray-600">상품을 찾을 수 없습니다.</p>
-      </div>
-    );
+    return {
+      title: "상품을 찾을 수 없습니다",
+      description: "요청한 상품 정보를 찾을 수 없습니다.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* 왼쪽: 상품 이미지 섹션 */}
-        <section className="flex flex-col gap-4">
-          <div className="relative aspect-square w-full overflow-hidden rounded-lg">
-            <Image
-              src={product.image_url}
-              alt={product.name || "상품 이미지"}
-              fill
-              className="object-contain"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
-        </section>
+  const productUrl = `/product/${product.id}`;
+  const description = product.description || `${product.name} 상품 상세 페이지`;
+  const imageUrl = toAbsoluteUrl(product.image_url || "/images/home.png");
 
-        {/* 오른쪽: 상품 정보 섹션 */}
-        <section className="flex flex-col">
-          <div className="flex h-full w-full flex-col gap-4 rounded-md p-6">
-            <p className="text-2xl font-bold text-gray-700">{product.name}</p>
-            <p className="text-gray-700">{product.price.toLocaleString()}원</p>
-            <p className="text-gray-700">{product.description}</p>
-          </div>
-          <section className="flex flex-col gap-2">
-            <div>
-              <Select value={selectedSize} onValueChange={setSelectedSize}>
-                <SelectTrigger className="!h-12 w-full">
-                  <SelectValue placeholder="사이즈 선택" />
-                </SelectTrigger>
-                <SelectContent>
-                  {product.size?.map((size: string) => (
-                    <SelectItem key={size} value={size}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Button
-                className="h-12 w-full cursor-pointer"
-                onClick={handleAddToCart}
-                disabled={isAddingToCart}
-              >
-                {isAddingToCart ? "추가 중..." : "구매하기"}
-              </Button>
-            </div>
-          </section>
-        </section>
-      </div>
-    </div>
-  );
+  return {
+    title: product.name,
+    description,
+    alternates: {
+      canonical: productUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "ko_KR",
+      title: product.name,
+      description,
+      url: productUrl,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+export default async function ProductDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const product = await getProductById(id);
+
+  if (!product) {
+    notFound();
+  }
+
+  return <ProductDetailClient product={product} />;
 }
