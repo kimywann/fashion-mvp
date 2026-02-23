@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/types/product.model";
 import ProductDetailClient from "./ProductDetailClient";
+import ProductDetailSkeleton from "./ProductDetailSkeleton";
 
 type PageProps = {
   params: Promise<{
@@ -52,7 +54,9 @@ const getProductById = cache(async (id: string) => {
   };
 });
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const product = await getProductById(id);
 
@@ -101,8 +105,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params;
+// DB 쿼리 + 렌더링을 담당하는 독립 async 서버 컴포넌트
+async function ProductContent({ id }: { id: string }) {
   const product = await getProductById(id);
 
   if (!product) {
@@ -110,4 +114,14 @@ export default async function ProductDetailPage({ params }: PageProps) {
   }
 
   return <ProductDetailClient product={product} />;
+}
+
+export default async function ProductDetailPage({ params }: PageProps) {
+  const { id } = await params;
+
+  return (
+    <Suspense fallback={<ProductDetailSkeleton />}>
+      <ProductContent id={id} />
+    </Suspense>
+  );
 }
