@@ -1,53 +1,26 @@
-"use client";
+import { PAGE_SIZE, type ProductListItem } from "@/hooks/useProducts";
+import { createClient } from "@/lib/supabase/server";
+import HomeClient from "./HomeClient";
 
-import { useProducts } from "@/hooks/useProducts";
-import { ProductCard } from "@/components/product";
-import { ProductCardSkeleton } from "@/components/product/ProductCardSkeleton";
+// SSR: 매 요청마다 서버에서 렌더링
+// 첫 상품 목록을 서버에서 미리 가져와 FCP 개선 및 SEO 확보
+const getInitialProducts = async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name, price, image_url")
+    .order("created_at", { ascending: false })
+    .range(0, PAGE_SIZE - 1);
 
-export default function Home() {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useProducts();
+  if (error) {
+    return [] as ProductListItem[];
+  }
 
-  const products = data?.pages.flatMap((page) => page.items) ?? [];
+  return (data ?? []) as ProductListItem[];
+};
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">New Products</h1>
+export default async function HomePage() {
+  const initialProducts = await getInitialProducts();
 
-      <div className="relative min-h-[600px]">
-        {isLoading ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <ProductCardSkeleton key={index} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {products.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                imageUrl={product.image_url}
-                priority={index < 10}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {!isLoading && hasNextPage && (
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="cursor-pointer rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-          >
-            {isFetchingNextPage ? "Loading..." : "Load More"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  return <HomeClient initialProducts={initialProducts} />;
 }
