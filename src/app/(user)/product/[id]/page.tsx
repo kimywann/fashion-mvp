@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicServerClient } from "@/lib/supabase/public-server";
 import type { Product } from "@/types/product.model";
 import ProductDetailClient from "./ProductDetailClient";
 import ProductDetailSkeleton from "./ProductDetailSkeleton";
+
+export const revalidate = 60;
 
 type PageProps = {
   params: Promise<{
@@ -35,11 +37,18 @@ const parseSize = (size: Product["size"] | string | null) => {
   }
 };
 
+// 빌드 타임에 전체 상품 ID를 가져와 정적 페이지 사전 생성
+export async function generateStaticParams() {
+  const supabase = createPublicServerClient();
+  const { data } = await supabase.from("products").select("id");
+  return (data ?? []).map((p) => ({ id: String(p.id) }));
+}
+
 const getProductById = cache(async (id: string) => {
   const productId = id.trim();
   if (!productId) return null;
 
-  const supabase = await createClient();
+  const supabase = createPublicServerClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
